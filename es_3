@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stampa numeri</title>
+    <script>
+        function stampaNumeri(){
+            let num= document.getElementById("numInput").value;  
+            let risultato= document.getElementById("risultato");
+            
+            let str= "";  
+            
+            for (let i=0; i<=num; i++){
+                str+= i+ " ";  
+            }
+            
+            let decimo= Math.round(num*0.1);  
+            
+            str+= "<br>" + decimo;  
+            
+            risultato.innerHTML= str;  
+        }
+    </script>
+</head>
+<body>
+    <input type="number" id="numInput">
+    <button onclick="stampaNumeri()">Stampa numeri</button>
+    <br>
+    <div id="risultato"></div>
+</body>
+</html>
