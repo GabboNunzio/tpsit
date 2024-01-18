@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contatore e Tabellina</title>
+    <script>
+        function startContatore() {
+            let cont=1;
+            let intervallo= setInterval(function(){
+                if (cont > 5) {
+                    clearInterval(intervallo); 
+                    stampaTabellina();
+                } else {
+                    console.log(cont);
+                    cont++;
+                }
+            }, 1000);
+        }
+
+        function stampaTabellina() {
+            let tabellinaOutput = "";
+            for (let i=1; i<=10; i++) {
+                tabellinaOutput+= i + "<br>";
+            }
+            document.getElementById("output").innerHTML= tabellinaOutput;
+        }
+    </script>
+</head>
+<body>
+    <button onclick="startContatore()">Avvia contatore</button>
+    <div id="output"></div>
+</body>
+</html>
