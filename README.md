@@ -1,2 +1,0 @@
-# tpsit
-nuzzo esercizi
