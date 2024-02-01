@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafica 3</title>
+    <style>
+        .square {
+            width: 10px;
+            height: 10px;
+            margin: 2px;
+            display: inline-block;
+        }
+        .light-grey {
+            background-color: #eee;
+            border: 1px solid black;
+        }
+        .dark-grey {
+            background-color: #7F7F7F;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tbody>
+            
+            <script>
+                for (var i=1; i<=100; i++){
+                    
+                    if ((i - 1)%10==0){
+                        document.write("<tr>");
+                    }
+                    var squareClass= (i %2==0) ? "light-grey" : "dark-grey";
+                    
+                    var squareHtml= '<td><div class="square ' + squareClass + '"></div></td>';
+                    
+                    document.write(squareHtml);
+                    
+                    if (i %10==0){
+                        document.write("</tr>");
+                    }
+                }
+            </script>
+        </tbody>
+    </table>
+</body>
+</html>
