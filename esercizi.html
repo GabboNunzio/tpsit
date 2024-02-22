@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>esercizi</title>
+
+    <style>
+        #trasforma_box{
+            border: 1px solid black;
+            width: 500px;
+            height: 300px;
+            padding: 20px;
+        }
+
+        #box_panelli{
+            background-color: rgba(212, 13, 13, 0.685);
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+   
+<div id="trasforma_box">
+    <p>esercizio recupero input e output: scrivi un dato in ingresso una
+        misura in kw, trasforma questa in una misura correlata al tempo.
+        crea un div contenitore degli input e degli output neccessari.</p>
+    
+    <label for="input_kw">kW:</label>
+    <input type="text" id="input_kw" name="input_kw">
+    
+    <label for="input_h">Ore:</label>
+    <input type="text" id="input_h" name="input_h">
+
+    <button onclick="trasforma()">Calcola</button>
+    
+    <p id="risultato"></p>
+</div>
+
+<div id="box_panelli">
+    <p>esercizio 2: crea un'ulteriore div con lo sfondo a tuo piacere che contiene
+        la potenza dei panelli fotovoltaici che possediamo.
+        calcolare il totale della potenza basata sul numero dei panelli totali.</p>
+
+    <label for="numero_pannelli">Numero pannelli:</label>
+    <input type="text" id="numero_pannelli" name="numero_pannelli">
+
+    <button onclick="calcolaPotenzaTotale()">Calcola Potenza Totale</button>
+
+    <p id="potenza_totale"></p>
+</div>
+
+<script>
+    function trasforma(){
+        let kw= parseFloat(document.getElementById("input_kw").value);
+        let h= parseFloat(document.getElementById("input_h").value);
+        let kwh= kw * h;
+        document.getElementById("risultato").innerHTML= "Energia totale: "+kwh +" kWh";
+    }
+
+    function calcolaPotenzaTotale(){
+        let numeroPannelli= parseInt(document.getElementById("numero_pannelli").value);
+        let potenzaSingoloPannello= 300; 
+        let potenzaTot= numeroPannelli * potenzaSingoloPannello;
+        document.getElementById("potenza_totale").innerHTML= "Potenza totale: "+potenzaTot +" W";
+    }
+</script>
+
+</body>
+</html>

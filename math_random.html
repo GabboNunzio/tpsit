@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Numeri Casuali</title>
+</head>
+<body>
+
+<script>
+   
+    function getRandomNumber(min, max){
+        return Math.floor(Math.random()*(max-min + 1))+ min;
+    }
+    for (let i=0; i<1000; i++){
+        const randomNumber= getRandomNumber(1, 6);
+        document.write(randomNumber+' ');
+    }
+</script>
+
+</body>
+</html>
