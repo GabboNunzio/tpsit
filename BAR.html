@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+    }
+    #output {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="btnInstructions">Istruzioni</button>
+  <button id="btnMenuDrink">Menu Drink</button>
+  <button id="btnOrders">Ordini</button>
+
+  <div id="output"></div>
+
+  <script>
+    let clickCount = 0;
+
+    document.getElementById('btnInstructions').addEventListener('click', function() {
+      clickCount++;
+      displayOutput("Ciao");
+    });
+
+    document.getElementById('btnMenuDrink').addEventListener('click', function() {
+      clickCount++;
+      if (clickCount === 2) {
+        displayOutput("Sono un chatbot pronto per servirti");
+      } else if (clickCount === 3) {
+        displayOutput("Premi il secondo bottone per avere la lista dei drink che sono in grado di prepararti.");
+      }
+    });
+
+    document.getElementById('btnOrders').addEventListener('click', function() {
+      clickCount++;
+      if (clickCount === 4) {
+        const orderPrompt = prompt("Inserisci le tue ordinazioni separate da virgola:");
+        const orders = orderPrompt ? orderPrompt.split(',') : [];
+        displayOutput("Lista degli ordini: " + orders.join(', '));
+      }
+    });
+
+    function displayOutput(message) {
+      document.getElementById('output').innerText = message;
+    }
+  </script>
+
+</body>
+</html>
