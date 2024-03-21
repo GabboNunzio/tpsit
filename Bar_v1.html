@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestione Bar</title>
+</head>
+<body>
+  <h1>Benvenuto al Bar</h1>
+
+  <div id="menu">
+    <h2>Menu</h2>
+    <ul id="drinkList"></ul>
+  </div>
+
+  <div id="orders">
+    <h2>Ordini</h2>
+    <ul id="orderList"></ul>
+  </div>
+
+  <div id="controls">
+    <h2>Controlli</h2>
+    <button onclick="countItems()">Conta Elementi</button>
+    <button onclick="addDrink()">Aggiungi Drink</button>
+    <button onclick="deleteDrink()">Elimina Drink</button>
+    <button onclick="placeOrder()">Ordina</button>
+  </div>
+
+  <script>
+    
+    var drinks= ["Caffè", "Tè", "Birra", "Vino"];
+
+    var orders= [];
+    
+    function displayMenu(){
+      var drinkList= document.getElementById("drinkList");
+      drinkList.innerHTML= "";
+      drinks.forEach(function(drink){
+        var listItem= document.createElement("li");
+        listItem.textContent= drink;
+        drinkList.appendChild(listItem);
+      });
+    }
+    
+    function displayOrders(){
+      var orderList= document.getElementById("orderList");
+      orderList.innerHTML= "";
+      orders.forEach(function(order){
+        var listItem= document.createElement("li");
+        listItem.textContent= order;
+        orderList.appendChild(listItem);
+      });
+    }
+    
+    function countItems(){
+      alert("Numero di drink nel menu: " + drinks.length + "\nNumero di ordini: " + orders.length);
+    }
+   
+    function addDrink(){
+      var newDrink= prompt("Inserisci il nome del nuovo drink:");
+      if (newDrink){
+        drinks.push(newDrink);
+        displayMenu();
+      }
+    }
+
+    function deleteDrink(){
+      var drinkToDelete= prompt("Inserisci il nome del drink da eliminare:");
+      var index= drinks.indexOf(drinkToDelete);
+      if (index !== -1){
+        drinks.splice(index, 1);
+        displayMenu();
+      } else{
+        alert("Il drink specificato non è nel menu.");
+      }
+    }
+
+    function placeOrder(){
+      var order= prompt("Inserisci il numero corrispondente al drink che desideri ordinare:\n" + drinks.join("\n"));
+      var drinkOrdered= drinks[parseInt(order) - 1];
+      if (drinkOrdered){
+        orders.push(drinkOrdered);
+        displayOrders();
+      } else{
+        alert("Drink non valido.");
+      }
+    }
+    displayMenu();
+  </script>
+</body>
+</html>
