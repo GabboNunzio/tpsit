@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Marco Palladino Analisi numerica</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/"&gt;
+
+ <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+  
+    <link href="cover.css" rel="stylesheet">
+  </head>
+  <body class="d-flex h-100 text-center text-white bg-dark">
+   
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="mb-auto">
+    <div>
+      <h3 class="float-md-start mb-0">Marco Palladino</h3>
+      <nav class="nav nav-masthead justify-content-center float-md-end">
+        <a class="nav-link active" aria-current="page" href="#">Home</a>
+        <a class="nav-link" href="#">Algorimo 1</a>
+        <a class="nav-link" href="#">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="px-3">
+      <p> Algorimto 1 inserimento dei numeri interi in un
+        array
+      </p>
+      <button onclick="ArrayNumeri(10)"> Inserisci numeri nell'array</button>
+        <p id="out1">
+        </p>
+
+        <p> Algorimto 2 inserimento dei numeri interi pari in un
+          array
+        </p>
+        <button onclick="ArrayNumeriPari(10)"> Inserisci numeri pari nell'array</button>
+          <p id="out2">
+          </p>
+          <p> Algorimto 2 inserimento dei numeri interi dispari in un
+            array
+          </p>
+          <button onclick="ArrayNumeriDispari(10)"> Inserisci numeri dispari nell'array</button>
+            <p id="out2">
+            </p>
+
+
+  </main>
+
+  <footer class="mt-auto text-white-50">
+    <p>Cover template for <a href="https://getbootstrap.com/&quot; class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo&quot; class="text-white">@mdo</a>.</p>
+  </footer>
+</div>
+
+<script >
+     
+     let arrayNumeri=[]
+     let arrayNumeriPari=[]
+     let arrayNumeriDispari=[]
+     let arrayFattoridi_N=[]
+
+     function ArrayNumeri(n){
+        for(let i =0;i<=n;i++)
+        { arrayNumeri.push(i)
+        }
+        document.getElementById("out1").innerHTML=arrayNumeri
+     }
+
+     function ArrayNumeriPari(n){
+        for(let i =0;i<=n;i++)
+        {
+          if (i%2==0)
+            {arrayNumeriPari.push(i)}
+          else
+          {arrayNumeriDispari.push(i)
+
+          }
+
+        }
+        document.getElementById("out2").innerHTML=arrayNumeriPari
+        document.getElementById("out3").innerHTML=arrayNumeriDispari
+     }
+
+</script>
+
+   
+  </body>
+</html>
