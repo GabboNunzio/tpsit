@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Analisi numerica 2</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
+
+    
+    <link href="./assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+    
+    <link href="cover.css" rel="stylesheet">
+</head>
+<body class="d-flex h-100 text-center text-white bg-dark">
+   
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="mb-auto">
+        <div>
+            <h3 class="float-md-start mb-0">Gabriele Nuzzo</h3>
+            <nav class="nav nav-masthead justify-content-center float-md-end">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link" href="#">Analisi Numerica 2</a>
+                <a class="nav-link" href="#">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="px-3">
+        <p>Algoritmo 1: Inserimento dei numeri interi da 1 a 100 in un array</p>
+        <button onclick="stampaNumeriDa1A100()">Inserisci numeri nell'array</button>
+        <p id="out1"></p>
+
+        <p>Algoritmo 2: Inserimento dei numeri interi pari da 1 a 100 in un array</p>
+        <button onclick="stampaNumeriPariDa1A100()">Inserisci numeri pari nell'array</button>
+        <p id="out2"></p>
+
+        <p>Algoritmo 3: Inserimento dei numeri interi dispari da 1 a 100 in un array</p>
+        <button onclick="stampaNumeriDispariDa1A100()">Inserisci numeri dispari nell'array</button>
+        <p id="out3"></p>
+    </main>
+
+    <footer class="mt-auto text-white-50">
+        <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
+    </footer>
+</div>
+
+<script>
+    // Funzione per stampare tutti i numeri da 1 a 100
+    function stampaNumeriDa1A100() {
+        let output = "";
+        for (let i = 1; i <= 100; i++) {
+            output += i + " ";
+        }
+        document.getElementById("out1").textContent = output;
+    }
+
+    // Funzione per stampare i numeri pari da 1 a 100 in un array
+    function stampaNumeriPariDa1A100() {
+        let output = "";
+        for (let i = 2; i <= 100; i += 2) {
+            output += i + " ";
+        }
+        document.getElementById("out2").textContent = output;
+    }
+
+    // Funzione per stampare i numeri dispari da 1 a 100 in un array
+    function stampaNumeriDispariDa1A100() {
+        let output = "";
+        for (let i = 1; i <= 100; i += 2) {
+            output += i + " ";
+        }
+        document.getElementById("out3").textContent = output;
+    }
+</script>
+
+</body>
+</html>
