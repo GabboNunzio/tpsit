@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Numeri Casuali</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #numbers{
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #numbers2{
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #generate-button{
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #conteiner{
+           margin-top: 20px;
+           font-size: 24px;
+           width: 200px;
+           height: 200px;
+           border: 3px solid red;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+        }
+        #conteiner2{
+           margin-top: 20px;
+           font-size: 24px;
+           width: 200px;
+           height: 200px;
+           border: 3px solid red;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+        }
+        #box{
+           margin-top: 20px;
+           font-size: 24px;
+           width: 200px;
+           height: 200px;
+           border: 3px solid gray;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Generatore di Numeri Casuali</h1>
+    <button id="generate-button">Genera Numero Casuale</button>
+    <div id="numbers"></div>
+    <div id="numbers2"></div>
+    <div id="conteiner"></div>
+    <div id="conteiner2"></div>
+    <div id="box"></div>
+
+    <script>
+        // Funzione per controllare se un numero è primo
+        function isPrime(num) {
+            if (num <= 1) return false; // 0 e 1 non sono primi
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false; // Divisibile per un numero diverso da 1 e se stesso
+            }
+            return true; // È primo
+        }
+
+        // Funzione per generare un numero casuale tra 1 e 100
+        function getRandomNumber() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+        function getRandomNumber2() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+let randomNumber1= 0;
+let randomNumber2= 0;
+        // Funzione per aggiornare il contenuto della pagina
+        function updateNumbers() {
+            const numbersDiv= document.getElementById('numbers');
+            randomNumber1= getRandomNumber();
+            numbersDiv.textContent= `Numero Casuale: ${randomNumber1}`;
+        }
+           
+        function updateNumbers2() {
+            const numbers2Div= document.getElementById('numbers2');
+            randomNumber2= getRandomNumber2();
+            numbers2Div.textContent= `Numero Casuale: ${randomNumber2}`;
+
+            const conteinerDiv= document.getElementById('conteiner');
+            const conteiner2Div= document.getElementById('conteiner2');
+
+        // Verifica se il numero è primo o non primo
+            const primality= isPrime(randomNumber2) ? 'PRIMO' : 'NON PRIMO';
+            conteinerDiv.textContent= `Il numero è ${primality}`;
+
+              const parity= randomNumber2 %2===0 ? 'PARI' : 'DISPARI';
+             // Mostra il risultato nel quadrato rosso
+          conteiner2Div.textContent= `Il numero è ${parity}`;
+
+          const difference = randomNumber1 - randomNumber2;
+
+          const boxDiv = document.getElementById('box');
+          boxDiv.textContent = `Differenza: ${difference}`;
+        }
+
+       
+        document.getElementById('generate-button').addEventListener('click', updateNumbers);
+        document.getElementById('generate-button').addEventListener('click', updateNumbers2);
+    </script>
+</body>
+</html>
