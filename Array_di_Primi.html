@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Array primi </title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #numbers, #primes{
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #generate-button{
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #conteiner{
+           margin-top: 20px;
+           font-size: 24px;
+           width: 200px;
+           height: 50px;
+           border: 3px solid red;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bottone per generare un numero casuale -->
+    <button id="generate-button">Genera Array </button>
+    <div id="numbers"></div>
+    <div id="conteiner"></div>
+    <div id="primes"></div>
+
+    <script>
+        // Funzione per controllare se un numero è primo
+        function isPrime(num) {
+            if (num <= 1) return false; // 0 e 1 non sono primi
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false; // Divisibile per un numero diverso da 1 e se stesso
+            }
+            return true; // È primo
+        }
+
+        // Funzione per generare un array di numeri primi fino a un certo limite
+        function generatePrimes(limit) {
+            const primes = [];
+            for (let i = 2; i <= limit; i++) {
+                if (isPrime(i)) {
+                    primes.push(i);
+                }
+            }
+            return primes;
+        }
+
+        // Funzione per generare un numero casuale tra 1 e 100
+        function getRandomNumber() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+
+        // Funzione per aggiornare il contenuto della pagina con un numero casuale
+        function updateNumbers() {
+            const numbersDiv = document.getElementById('numbers');
+            const conteinerDiv = document.getElementById('conteiner');
+            const randomNumber = getRandomNumber();
+            numbersDiv.textContent = `Numero Casuale: ${randomNumber}`;
+
+            // Verifica se il numero è primo o non primo
+            const primality = isPrime(randomNumber) ? 'PRIMO' : 'NON PRIMO';
+            conteinerDiv.textContent = `Il numero è ${primality}`;
+        }
+
+        // Funzione per mostrare numeri primi fino a 100
+        function displayPrimes() {
+            const primesDiv = document.getElementById('primes');
+            const primeNumbers = generatePrimes(100); // Genera numeri primi fino a 100
+            primesDiv.textContent = `Numeri Primi Fino a 100: ${primeNumbers.join(', ')}`;
+        }
+
+        // Event listeners per i bottoni
+        document.getElementById('generate-button').addEventListener('click', updateNumbers, displayPrimes);
+    </script>
+</body>
+</html>
