@@ -1,0 +1,42 @@
+{
+  "users": [
+    {
+      "username": "GA",
+      "password": "gdsrg"
+    },
+    {
+      "username": "GAbriele",
+      "password": "ster5tewiur92"
+    },
+    {
+      "username": "GAbriele",
+      "password": "ster5tewiur92"
+    },
+    {
+      "username": "GAbriele",
+      "password": "123456789"
+    },
+    {
+      "username": "Gabriele Nuzzo",
+      "password": "Gabriele2007"
+    },
+    {
+      "username": "Gabriele_N",
+      "password": "123456"
+    }
+  ],
+  "posts": [
+    {
+      "content": "osdhfiquiwrfnklv acakldnfjadfkewifowepfklaniwehripsiodehfg",
+      "user": "Utente"
+    },
+    {
+      "content": "ciao!",
+      "user": "Utente"
+    },
+    {
+      "content": "hollaa!",
+      "user": "Utente"
+    }
+  ]
+}
