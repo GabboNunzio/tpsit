@@ -10,6 +10,9 @@
     .day { padding: 10px; text-align: center; cursor: pointer; border-radius: 10px; border: 1px solid #ddd; }
     .selected { outline: 2px solid black; }
     .event-title { font-size: 0.7em; margin-top: 5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .today { background-color: #cce5ff !important; }
+    .sunday { color: red; font-weight: bold; }
+    .weekday-header { font-weight: bold; text-align: center; }
   </style>
 </head>
 <body class="p-3">
@@ -20,7 +23,8 @@
     <h5 id="month-label" class="mb-0"></h5>
     <button class="btn btn-secondary" onclick="changeMonth(1)">▶</button>
   </div>
-Promemoria
+
+  <div class="calendar mb-2" id="weekdays"></div>
   <div class="calendar mb-3" id="calendar"></div>
 
   <div id="event-form" class="card p-3" style="display:none;">
@@ -40,6 +44,7 @@ Promemoria
 
 <script>
   const calendarEl = document.getElementById('calendar');
+  const weekdaysEl = document.getElementById('weekdays');
   const monthLabel = document.getElementById('month-label');
   const eventForm = document.getElementById('event-form');
   const formDayLabel = document.getElementById('form-day-label');
@@ -54,16 +59,40 @@ Promemoria
 
   let events = JSON.parse(localStorage.getItem('calendarEvents') || '{}');
 
+  const weekdays = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+
+  function renderWeekdays() {
+    weekdaysEl.innerHTML = '';
+    weekdays.forEach((d, index) => {
+      const el = document.createElement('div');
+      el.className = 'weekday-header';
+      if(index === 6) el.classList.add('sunday');
+      el.textContent = d;
+      weekdaysEl.appendChild(el);
+    });
+  }
+
   function renderCalendar() {
     calendarEl.innerHTML = '';
+
     monthLabel.textContent = new Date(currentYear, currentMonth).toLocaleString('it-IT', { month: 'long', year: 'numeric' });
 
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // Adjust for Monday start
+    let startOffset = (firstDay === 0 ? 6 : firstDay - 1);
+
+    for(let i = 0; i < startOffset; i++) {
+      calendarEl.appendChild(document.createElement('div'));
+    }
 
     for (let day = 1; day <= daysInMonth; day++) {
       const key = `${currentYear}-${currentMonth}-${day}`;
       const dayEl = document.createElement('div');
       dayEl.className = 'day';
+
+      const dateObj = new Date(currentYear, currentMonth, day);
 
       if (events[key]) {
         dayEl.style.backgroundColor = events[key].color;
@@ -71,6 +100,16 @@ Promemoria
 
       if (selectedDay === day) {
         dayEl.classList.add('selected');
+      }
+
+      // oggi evidenziato
+      if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+        dayEl.classList.add('today');
+      }
+
+      // domenica rossa
+      if (dateObj.getDay() === 0) {
+        dayEl.classList.add('sunday');
       }
 
       dayEl.innerHTML = `<div>${day}</div>` + (events[key] ? `<div class='event-title'>${events[key].title}</div>` : '');
@@ -113,6 +152,9 @@ Promemoria
 
     localStorage.setItem('calendarEvents', JSON.stringify(events));
 
+    setTimeout(() => {
+      alert(`Promemoria: ${titleInput.value}`);
+    }, 5000);
 
     renderCalendar();
   }
@@ -154,6 +196,7 @@ Promemoria
   document.getElementById('save-btn').onclick = saveEvent;
   document.getElementById('delete-btn').onclick = deleteEvent;
 
+  renderWeekdays();
   renderCalendar();
 </script>
 
