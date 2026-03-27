@@ -6,46 +6,34 @@
   <title>Agenda Calendario</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
+    body { background-color: white; color: black; }
     body.dark { background-color: #121212; color: white; }
 
     .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
-
     .day { padding: 10px; text-align: center; cursor: pointer; border-radius: 10px; border: 1px solid #ddd; }
-    body.dark .day { border-color: #444; }
+    .today { background-color: #cce5ff !important; color: black !important; }
+    .sunday { color: red; font-weight: bold; }
 
+    body.dark .day { border-color: #444; }
     .selected { outline: 2px solid black; }
     body.dark .selected { outline: 2px solid white; }
-
     .event-title { font-size: 0.7em; margin-top: 5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-
-    /* oggi azzurrino ma numero nero */
-    .today { background-color: #cce5ff !important; color: black !important; }
-
-    .sunday { color: red; font-weight: bold; }
     .weekday-header { font-weight: bold; text-align: center; }
 
-    /* DARK MODE FORM */
-    body.dark .card {
-      background-color: #1e1e1e;
-      color: white;
-      border: 1px solid #444;
-    }
+    .card { background-color: white; color: black; border: 1px solid #ddd; }
+    body.dark .card { background-color: #1e1e1e; color: white; border: 1px solid #444; }
 
-    body.dark input,
-    body.dark textarea {
-      background-color: #2c2c2c;
-      color: white;
-      border: 1px solid #555;
-    }
+    input, textarea { color: black; background-color: white; border: 1px solid #ccc; }
+    body.dark input, body.dark textarea { background-color: #2c2c2c; color: white; border: 1px solid #555; }
+    input::placeholder, textarea::placeholder { color: #999; }
+    body.dark input::placeholder, body.dark textarea::placeholder { color: #bbb; }
 
-    body.dark input::placeholder,
-    body.dark textarea::placeholder {
-      color: #bbb;
-    }
+    /* Mantieni giorno azzurro e domenica */
+    .today { background-color: #cce5ff !important; color: black !important; }
+    .sunday { color: red !important; }
   </style>
 </head>
 <body class="p-3">
-
 <div class="container">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <button class="btn btn-secondary" onclick="changeMonth(-1)">◀</button>
@@ -62,10 +50,8 @@
     <h6 id="form-day-label"></h6>
     <input type="text" id="title" class="form-control mb-2" placeholder="Titolo">
     <textarea id="description" class="form-control mb-2" placeholder="Descrizione"></textarea>
-
     <label>Scegli colore giorno:</label>
     <input type="color" id="color" class="form-control form-control-color mb-2">
-
     <div class="d-flex gap-2">
       <button class="btn btn-success w-100" id="save-btn">Conferma</button>
       <button class="btn btn-danger w-100" id="delete-btn">Elimina</button>
@@ -87,153 +73,120 @@
   let currentYear = today.getFullYear();
   let currentMonth = today.getMonth();
   let selectedDay = null;
-
   let events = JSON.parse(localStorage.getItem('calendarEvents') || '{}');
-
-  const weekdays = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+  const weekdays = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
 
   function isDarkColor(hex) {
     const r = parseInt(hex.substr(1,2),16);
     const g = parseInt(hex.substr(3,2),16);
     const b = parseInt(hex.substr(5,2),16);
-    const brightness = (r*299 + g*587 + b*114) / 1000;
-    return brightness < 128;
+    return (r*299 + g*587 + b*114)/1000 < 128;
+  }
+  function isLightColor(hex) {
+    const r = parseInt(hex.substr(1,2),16);
+    const g = parseInt(hex.substr(3,2),16);
+    const b = parseInt(hex.substr(5,2),16);
+    return (r*299 + g*587 + b*114)/1000 >= 200;
   }
 
   function toggleDarkMode() {
     document.body.classList.toggle('dark');
+    // Aggiorna colore testi input e textarea in base alla dark mode
+    const dark = document.body.classList.contains('dark');
+    titleInput.style.color = dark ? 'white' : 'black';
+    descInput.style.color = dark ? 'white' : 'black';
   }
 
-  function renderWeekdays() {
-    weekdaysEl.innerHTML = '';
-    weekdays.forEach((d, index) => {
-      const el = document.createElement('div');
-      el.className = 'weekday-header';
-      if(index === 6) el.classList.add('sunday');
-      el.textContent = d;
+  function renderWeekdays(){
+    weekdaysEl.innerHTML='';
+    weekdays.forEach((d,i)=>{
+      const el=document.createElement('div');
+      el.className='weekday-header';
+      if(i===6) el.classList.add('sunday');
+      el.textContent=d;
       weekdaysEl.appendChild(el);
     });
   }
 
-  function renderCalendar() {
-    calendarEl.innerHTML = '';
-
-    monthLabel.textContent = new Date(currentYear, currentMonth).toLocaleString('it-IT', { month: 'long', year: 'numeric' });
-
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-    let startOffset = (firstDay === 0 ? 6 : firstDay - 1);
-
-    for(let i = 0; i < startOffset; i++) {
-      calendarEl.appendChild(document.createElement('div'));
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const key = `${currentYear}-${currentMonth}-${day}`;
-      const dayEl = document.createElement('div');
-      dayEl.className = 'day';
-
-      const dateObj = new Date(currentYear, currentMonth, day);
-
-      if (events[key]) {
-        dayEl.style.backgroundColor = events[key].color;
-        if (isDarkColor(events[key].color)) {
-          dayEl.style.color = 'white';
-        }
+  function renderCalendar(){
+    calendarEl.innerHTML='';
+    monthLabel.textContent=new Date(currentYear,currentMonth).toLocaleString('it-IT',{month:'long',year:'numeric'});
+    const firstDay=new Date(currentYear,currentMonth,1).getDay();
+    const daysInMonth=new Date(currentYear,currentMonth+1,0).getDate();
+    const startOffset=(firstDay===0?6:firstDay-1);
+    for(let i=0;i<startOffset;i++) calendarEl.appendChild(document.createElement('div'));
+    for(let day=1;day<=daysInMonth;day++){
+      const key=`${currentYear}-${currentMonth}-${day}`;
+      const dayEl=document.createElement('div');
+      dayEl.className='day';
+      const dateObj=new Date(currentYear,currentMonth,day);
+      if(events[key]){
+        dayEl.style.backgroundColor=events[key].color;
+        if(isDarkColor(events[key].color)) dayEl.style.color='white';
+        else if(isLightColor(events[key].color)) dayEl.style.color='black';
       }
-
-      if (selectedDay === day) {
-        dayEl.classList.add('selected');
-      }
-
-      if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-        dayEl.classList.add('today');
-      }
-
-      if (dateObj.getDay() === 0) {
-        dayEl.classList.add('sunday');
-      }
-
-      dayEl.innerHTML = `<div>${day}</div>` + (events[key] ? `<div class='event-title'>${events[key].title}</div>` : '');
-
-      dayEl.onclick = () => selectDay(day, key);
+      if(selectedDay===day) dayEl.classList.add('selected');
+      if(day===today.getDate()&&currentMonth===today.getMonth()&&currentYear===today.getFullYear()) dayEl.classList.add('today');
+      if(dateObj.getDay()===0) dayEl.classList.add('sunday');
+      dayEl.innerHTML=`<div>${day}</div>`+(events[key]?`<div class='event-title'>${events[key].title}</div>`:'');
+      dayEl.onclick=()=>selectDay(day,key);
       calendarEl.appendChild(dayEl);
     }
   }
 
-  function selectDay(day, key) {
-    selectedDay = day;
-    eventForm.style.display = 'block';
-    formDayLabel.textContent = `Giorno ${day}`;
-
-    if (events[key]) {
-      titleInput.value = events[key].title;
-      descInput.value = events[key].description;
-      colorInput.value = events[key].color;
+  function selectDay(day,key){
+    selectedDay=day;
+    eventForm.style.display='block';
+    formDayLabel.textContent=`Giorno ${day}`;
+    if(events[key]){
+      titleInput.value=events[key].title;
+      descInput.value=events[key].description;
+      colorInput.value=events[key].color;
+      // Mantieni background scuro per textarea/input in dark mode
+      const dark = document.body.classList.contains('dark');
+      titleInput.style.color=isLightColor(events[key].color)?'black':'white';
+      descInput.style.color=isLightColor(events[key].color)?'black':'white';
+      titleInput.style.backgroundColor = dark ? '#2c2c2c' : 'white';
+      descInput.style.backgroundColor = dark ? '#2c2c2c' : 'white';
     } else {
-      titleInput.value = '';
-      descInput.value = '';
-      colorInput.value = '#ffffff';
+      titleInput.value=''; descInput.value=''; colorInput.value='#ffffff';
+      const dark = document.body.classList.contains('dark');
+      titleInput.style.color = dark ? 'white' : 'black';
+      descInput.style.color = dark ? 'white' : 'black';
+      titleInput.style.backgroundColor = dark ? '#2c2c2c' : 'white';
+      descInput.style.backgroundColor = dark ? '#2c2c2c' : 'white';
     }
-
     renderCalendar();
   }
 
-  function saveEvent() {
-    if (!selectedDay) return;
-    const key = `${currentYear}-${currentMonth}-${selectedDay}`;
-
-    events[key] = {
-      title: titleInput.value,
-      description: descInput.value,
-      color: colorInput.value
-    };
-
-    localStorage.setItem('calendarEvents', JSON.stringify(events));
-    renderCalendar();
+  function saveEvent(){
+    if(!selectedDay) return;
+    const key=`${currentYear}-${currentMonth}-${selectedDay}`;
+    events[key]={title:titleInput.value,description:descInput.value,color:colorInput.value};
+    localStorage.setItem('calendarEvents',JSON.stringify(events));
   }
 
-  function deleteEvent() {
-    if (!selectedDay) return;
-    if (!confirm('Sei sicuro di voler eliminare questo evento?')) return;
-
-    const key = `${currentYear}-${currentMonth}-${selectedDay}`;
+  function deleteEvent(){
+    if(!selectedDay) return;
+    if(!confirm('Sei sicuro di voler eliminare questo evento?')) return;
+    const key=`${currentYear}-${currentMonth}-${selectedDay}`;
     delete events[key];
-
-    localStorage.setItem('calendarEvents', JSON.stringify(events));
-
-    titleInput.value = '';
-    descInput.value = '';
-
+    localStorage.setItem('calendarEvents',JSON.stringify(events));
+    titleInput.value=''; descInput.value='';
     renderCalendar();
   }
 
-  function changeMonth(direction) {
-    currentMonth += direction;
-
-    if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
-
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    }
-
-    selectedDay = null;
-    eventForm.style.display = 'none';
-
+  function changeMonth(direction){
+    currentMonth+=direction;
+    if(currentMonth<0){currentMonth=11; currentYear--}
+    if(currentMonth>11){currentMonth=0; currentYear++}
+    selectedDay=null; eventForm.style.display='none';
     renderCalendar();
   }
 
-  document.getElementById('save-btn').onclick = saveEvent;
-  document.getElementById('delete-btn').onclick = deleteEvent;
-
-  renderWeekdays();
-  renderCalendar();
+  document.getElementById('save-btn').onclick=saveEvent;
+  document.getElementById('delete-btn').onclick=deleteEvent;
+  renderWeekdays(); renderCalendar();
 </script>
-
 </body>
 </html>
