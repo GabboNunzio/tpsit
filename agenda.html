@@ -61,6 +61,14 @@
 
   const weekdays = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
+  function isDarkColor(hex) {
+    const r = parseInt(hex.substr(1,2),16);
+    const g = parseInt(hex.substr(3,2),16);
+    const b = parseInt(hex.substr(5,2),16);
+    const brightness = (r*299 + g*587 + b*114) / 1000;
+    return brightness < 128;
+  }
+
   function renderWeekdays() {
     weekdaysEl.innerHTML = '';
     weekdays.forEach((d, index) => {
@@ -80,7 +88,6 @@
     const firstDay = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-    // Adjust for Monday start
     let startOffset = (firstDay === 0 ? 6 : firstDay - 1);
 
     for(let i = 0; i < startOffset; i++) {
@@ -96,18 +103,19 @@
 
       if (events[key]) {
         dayEl.style.backgroundColor = events[key].color;
+        if (isDarkColor(events[key].color)) {
+          dayEl.style.color = 'white';
+        }
       }
 
       if (selectedDay === day) {
         dayEl.classList.add('selected');
       }
 
-      // oggi evidenziato
       if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
         dayEl.classList.add('today');
       }
 
-      // domenica rossa
       if (dateObj.getDay() === 0) {
         dayEl.classList.add('sunday');
       }
@@ -128,9 +136,6 @@
       titleInput.value = events[key].title;
       descInput.value = events[key].description;
       colorInput.value = events[key].color;
-      if(events[key].description.trim() !== ''){
-        alert(`Descrizione: ${events[key].description}`);
-      }
     } else {
       titleInput.value = '';
       descInput.value = '';
@@ -151,10 +156,6 @@
     };
 
     localStorage.setItem('calendarEvents', JSON.stringify(events));
-
-    setTimeout(() => {
-      alert(`Promemoria: ${titleInput.value}`);
-    }, 5000);
 
     renderCalendar();
   }
